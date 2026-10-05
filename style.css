@@ -1,0 +1,13 @@
+.login-box {
+    padding: 30px;
+    border: 2px solid black;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+body {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
