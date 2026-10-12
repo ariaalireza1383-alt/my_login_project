@@ -1,19 +1,57 @@
+let userDataLoaded=false;
+function updateLoginButton() {
+    let username = document.getElementById("username").value;
+    let passwors = document.getElementById("password").value;
 
+    document.getElementById("loginBtn").disabled=
+        !userDataLoaded || username.trim()==="" || passwors.trim()==="";
+}
+async function getuser() {
+    try {
+        document.getElementById("apiStatus").textContent="Loading user data...."
+    let response = await fetch("https://jsonplaceholder.typicode.com/users/1");
+    if (!response.ok) {
+        throw new Error("request failed")
+    };
+    let data = await response.json();
+    
+    document.getElementById("apiResult1").textContent= data.name;
+    document.getElementById("apiResult2").textContent= data.username;
+    document.getElementById("apiResult3").textContent= data.email;
+    userDataLoaded=true;
+    updateLoginButton();
+   
+    document.getElementById("apiStatus").textContent = "User data loaded succsessfully";
+    }catch (error){
+        
+        document.getElementById("apiStatus").textContent = "could not load user data";
+        userDataLoaded = false;
+        updateLoginButton();
 
-fetch("https://jsonplaceholder.typicode.com/users/1")
-    .then(response=>response.json())
-    .then(data=>{console.log(data.name);});
+     }
+
+    
+    
+}
+document.getElementById("username").addEventListener("input",  updateLoginButton);
+document.getElementById("password").addEventListener("input", updateLoginButton);
+getuser();
 document.getElementById("loginBtn").onclick= function() {
     let username = document.getElementById("username").value;
     let password = document.getElementById("password").value;
-    if (username==="") {
-        document.getElementById("result").textContent="pleas enter your username";
+    let name = document.getElementById("apiResult1").textContent;
+    let user = document.getElementById("apiResult2").textContent;
+    let email = document.getElementById("apiResult3").textContent;
+    
+    
+    if (username!==user) {
+        document.getElementById("result").textContent="pleas enter your username corretlly";
     }
-    else if (password==="") {
-        document.getElementById("result").textContent="pleas enter your password";
+    else if (password!== email) {
+        document.getElementById("result").textContent="pleas enter your password corrrectlly";
     }
 
     else {
-    document.getElementById("result").textContent= "hello dear " + username;
+    document.getElementById("result").textContent= "hello dear " + name;
     }
 };
